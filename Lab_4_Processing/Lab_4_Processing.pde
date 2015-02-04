@@ -2,7 +2,7 @@
  
  Serial myPort;        // The serial port TODO
  int tempPos = 2;         // horizontal position of the graph
- int humPos = 1
+ int humPos = 1;
  
  void setup () {
    // set the window size:
@@ -37,7 +37,7 @@
      float humid = float(inString.split(" ")[1]);
      // converts range in temperature / humidity values to range that will fit on screen
      temp = map(temp, -30, 40, 0, height);
-     humid = map(humid, 0, 100, 0 height);
+     humid = map(humid, 0, 100, 0, height);
      
      // draw the line:
      stroke(127,34,255);
