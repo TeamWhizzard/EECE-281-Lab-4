@@ -35,15 +35,15 @@ void setup() {
 }
 
 void loop() {
-  delay(1000);
   
   Serial.println(); // add space for next weather report
   
   // TODO delays needed for readings of DHT?
   buttonState = digitalRead(pinButton);
   tempVal = analogRead(pinTemp) * 0.48828125; // reads temperature in celcius
-  humidVal = dht.readHumidity() * 100; // reads humidity from DHT, returns percentage
-  lightVal = analogRead(pinLight) * (100/1024); // reads ambiant light, returns percentage out of max
+  humidVal = dht.readHumidity(); // reads humidity from DHT, returns percentage
+  // light val devide by 10 is approx the percentage out of 100, devide by 2 is flooring values
+  lightVal = analogRead(pinLight) / 20; // reads ambiant light, returns percentage out of max
 
   // check that DHT is reading correctly 
   if (isnan(humidVal)) {
@@ -66,7 +66,7 @@ void serial_report(int temp, int humid, int light) {
   Serial.println("Temperature at " + String(temp) + " degrees Celcius / " + \
     String(dht.convertCtoF(temp)) + " degrees Fehrenheit.");
   Serial.println("Humidity at " + String(humid) + " percent.");
-  Serial.println("Ambiant light at " + String(light) + " percent.");
+  Serial.println("Ambient light at " + String(light) + " percent.");
   Serial.println();
   
   if (tempVal < 10) Serial.println(F("Brrrrr.  It's cold outside!"));
@@ -80,8 +80,15 @@ void lcd_report(int temp, int humid, int light) {
   lcd.print(F("Temp Light Humid"));
   
   lcd.setCursor (0,1);
-  lcd.print(String(temp) + " " + String(light) + String(humid));
+  lcd.print (String(temp) + "C");
   
+  lcd.setCursor (5,1);
+  lcd.print (String(light) + "%");
+ 
+  lcd.setCursor (11,1);
+  lcd.print (String(humid) + "%");
+  
+  delay(1000);
 }
 
 void serial_lcd_intro (void) {
@@ -98,4 +105,5 @@ void serial_lcd_intro (void) {
 
   lcd.setCursor(0,0);
   lcd.print(F("Weather Machine!"));
+  delay(1000);
 }
