@@ -14,7 +14,6 @@ DHT::DHT(uint8_t pin, uint8_t type, uint8_t count) {
 void DHT::begin(void) {
   // set up the pins!
   pinMode(_pin, INPUT_PULLUP);
-  //pinMode(_pin, INPUT);
   digitalWrite(_pin, HIGH);
   _lastreadtime = 0;
 }
@@ -48,7 +47,7 @@ float DHT::readTemperature(bool S) {
   return NAN;
 }
 
-float DHT::convertCtoF(float c) {
+int DHT::convertCtoF(int c) { // changed from float to int to make things easier :D
   return c * 9 / 5 + 32;
 }
 
@@ -126,7 +125,7 @@ boolean DHT::read(void) {
   noInterrupts();
   digitalWrite(_pin, HIGH);
   delayMicroseconds(40);
-  pinMode(_pin, INPUT);
+  pinMode(_pin, INPUT_PULLUP);
   
   // read in timings
   for ( i = 0; i < MAXTIMINGS; i++) {

@@ -25,7 +25,7 @@ class DHT {
     DHT(uint8_t pin, uint8_t type, uint8_t count = 6);
     void begin(void);
     float readTemperature(bool S = false);
-    float convertCtoF(float);
+    int convertCtoF(int);
     float convertFtoC(float);
     float computeHeatIndex(float tempFahrenheit, float percentHumidity);
     float readHumidity(void);

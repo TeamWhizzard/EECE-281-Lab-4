@@ -36,7 +36,7 @@
      float temp = float(inString.split(" ")[0]);
      float humid = float(inString.split(" ")[1]);
      // converts range in temperature / humidity values to range that will fit on screen
-     temp = map(temp, -30, 40, 0, height);
+     temp = map(temp, 2, 150, 0, height);
      humid = map(humid, 0, 100, 0, height);
      
      // draw the line:
