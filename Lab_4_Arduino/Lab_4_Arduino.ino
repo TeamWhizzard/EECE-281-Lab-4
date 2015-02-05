@@ -35,9 +35,6 @@ void setup() {
 }
 
 void loop() {
-  
-  Serial.println(); // add space for next weather report
-  
   // TODO delays needed for readings of DHT?
   buttonState = digitalRead(pinButton);
   tempVal = analogRead(pinTemp) * 0.48828125; // reads temperature in celcius
@@ -72,6 +69,7 @@ void serial_report(int temp, int humid, int light) {
   if (tempVal < 10) Serial.println(F("Brrrrr.  It's cold outside!"));
   else if ((tempVal > 10) && (tempVal < 20)) Serial.println(F("You might need a jacket today."));
   else Serial.println(F("Wow, it feels like summer!"));
+  Serial.println();
 }
 
 void lcd_report(int temp, int humid, int light) {
@@ -82,13 +80,14 @@ void lcd_report(int temp, int humid, int light) {
   lcd.setCursor (0,1);
   lcd.print (String(temp) + "C");
   
-  lcd.setCursor (5,1);
+  lcd.setCursor (6,1);
   lcd.print (String(light) + "%");
  
-  lcd.setCursor (11,1);
+  lcd.setCursor (12,1);
   lcd.print (String(humid) + "%");
   
   delay(1000);
+  
 }
 
 void serial_lcd_intro (void) {
@@ -106,4 +105,6 @@ void serial_lcd_intro (void) {
   lcd.setCursor(0,0);
   lcd.print(F("Weather Machine!"));
   delay(1000);
+  
+  Serial.println();
 }

@@ -1,8 +1,9 @@
  import processing.serial.*;
  
  Serial myPort;        // The serial port TODO
- int tempPos = 2;         // horizontal position of the graph
- int humPos = 1;
+ int tempPos = 3;         // horizontal position of the graph
+ int humPos = 2;
+ int lightPos = 1;
  
  void setup () {
    // set the window size:
@@ -33,17 +34,21 @@
      // trim off any whitespace - leading and trailing
      inString = trim(inString);
      
-     float temp = float(inString.split(" ")[0]);
-     float humid = float(inString.split(" ")[1]);
+     float temp = int(inString.split(" ")[0]);
+     float humid = int(inString.split(" ")[1]);
+     float light = int(inString.split(" ")[2]);
+     
      // converts range in temperature / humidity values to range that will fit on screen
-     temp = map(temp, 2, 150, 0, height);
-     humid = map(humid, 0, 100, 0, height);
+     //temp = map(temp, 2, 150, 0, height);
+     //humid = map(humid, 0, 100, 0, height);
+     light = map(light, 0, 100, 0, height);
      
      // draw the line:
      stroke(127,34,255);
-     line(tempPos, height, tempPos, height - temp);
-     line(humPos, height, humPos, height - humid);
-     
+     //line(tempPos, height, tempPos, height - temp);
+     //line(humPos, height, humPos, height - humid);
+     line(lightPos, height, lightPos, height - light);
+     /*
      // at the edge of the screen, go back to the beginning:
      if (tempPos >= width) {
        tempPos = 0;
@@ -61,6 +66,15 @@
      else {
        // increment the horizontal position:
        humPos++;
+     } */
+     
+     if (lightPos >= width) {
+       lightPos = 0;
+       background(0);
+     }
+     else {
+       // increment the horizontal position:
+       lightPos++;
      }
    }
  }
