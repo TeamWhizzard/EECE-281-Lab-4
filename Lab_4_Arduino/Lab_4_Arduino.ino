@@ -8,7 +8,7 @@
  *         /__\   I      L  .           John Deppe
  *        //..\\  I        a               Theresa Mammarella
  *        \].`[/  I       b                   Steven Olsen
- *       /l\/j\  (]    .   4
+ *       /l\/j\  (]    .   2
  *       /. ~~ ,\/I          .
  *       \\L__j^\/I       o
  *        \/--v}  I     o   .
