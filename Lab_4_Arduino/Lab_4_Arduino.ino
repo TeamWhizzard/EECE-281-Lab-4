@@ -32,25 +32,23 @@ const int pinDHT = 4;
 const int pinLight = A1;
 const int pinBuzzer = 6;
 
-boolean chimeIn = false;
-boolean firstRun = true;
-
 // variables to hold values from weather sensing inputs
-int buttonState;
+int newButtonState;
+int oldButtonState;
 int tempVal;
 int humidVal;
 int lightVal;
 
-DHT dht(pinDHT, DHTTYPE); // initialize DHT sensor
 // Note: For our setup, ensure pinMode(INPUT_PULLUP) is set in DHT library
+DHT dht(pinDHT, DHTTYPE); // initialize DHT sensor
 LiquidCrystal lcd(2, 3, 8, 9, 10, 11); // initialize LCD display
 
 void setup() {
-  // TODO does baud rate matter for external software? yep.
+  // does baud rate matter for external software? yep.
   Serial.begin(115200); //Serial Port Initialization
 
   pinMode (pinButton, INPUT_PULLUP); // initialize button
-  pinMode (pinBuzzer, INPUT); // Piezo Buzzer
+  pinMode (pinBuzzer, INPUT); // piezo buzzer
 
   dht.begin(); // sensor begins reading
   lcd.begin(16, 2);
@@ -60,7 +58,6 @@ void setup() {
 
 void loop() {
   // TODO delays needed for readings of DHT?
-  buttonState = digitalRead(pinButton);
   tempVal = analogRead(pinTemp) * 0.48828125; // reads temperature in celcius
   humidVal = dht.readHumidity(); // reads humidity from DHT, returns percentage
   // light val devide by 10 is approx the percentage out of 100, devide by 2 is flooring values
@@ -71,23 +68,18 @@ void loop() {
     Serial.println(F("Failed to read from DHT sensor!"));
     return;
   }
-
+  oldButtonState = newButtonState;
+  newButtonState = digitalRead(pinButton);
   // switch is off, output on serial monitor
-  if (buttonState == LOW) {
+  if (newButtonState == LOW) {
     serial_report(tempVal, humidVal, lightVal);  // printed values are to be read by external software Processing and MatLab
-    if ((chimeIn == true) && (firstRun == false)) {
-      buzzer(chimeIn);
-      chimeIn = false;
-    }
   } else {
     Serial.println(String(tempVal) + " " + String(humidVal) + " " + String(lightVal));
-    if ((chimeIn == false) && (firstRun == false)) {
-      buzzer(chimeIn);
-      chimeIn = true;
-    }
+  }
+  if (oldButtonState != newButtonState) { // play chime if changing verbosity mode
+      buzzer(newButtonState);
   }
   lcd_report(tempVal, humidVal, lightVal); // lcd message display not dependent on button
-  firstRun = false;
 }
 
 void serial_report(int temp, int humid, int light) {
@@ -128,9 +120,9 @@ void serial_lcd_intro (void) {
 
   // lcd intro
   lcd.setCursor(0, 0);
-  lcd.print(F("Whizzard is prou")); // first 16 characters of message
+  lcd.print(F(" Team Whizzard  ")); // first 16 characters of message
   lcd.setCursor(0, 1);
-  lcd.print(F("d to present:")); // remaining characters of message
+  lcd.print(F("   presents:    ")); // remaining characters of message
   delay(1000);
   lcd.clear();
 
@@ -141,9 +133,10 @@ void serial_lcd_intro (void) {
   Serial.println();
 }
 
-void buzzer(boolean in) {
+// button being on causes "upward" chime
+void buzzer(int buttonState) {
   int chime[3] = {294, 370, 587};
-  if (in) {
+  if (buttonState == HIGH) {
     for (int i = 0; i < 3; i++) {
       tone(pinBuzzer, chime[i], 200);
       delay(200);
