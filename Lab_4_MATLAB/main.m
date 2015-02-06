@@ -2,7 +2,7 @@
 %  John Deppe, Theresa Mammarella, Steven Olsen
 
 clear all
-%close all
+close all
 clc
 
 s1 = serial('COM4', 'BaudRate', 115200, 'Parity', 'none', 'DataBits', 8, 'StopBits', 1, 'FlowControl', 'none');
@@ -17,7 +17,6 @@ for n=1:3
     axesHandles(n) = subplot(3,1,n);
     lineHandles(n) = plot(0,0,colors(n));
     title(titles(n))
-    %set(axesHandles(n),'XTickLabel',fliplr(M:1),'XTickMode','Manual','XGrid','On','YGrid','On')
     set(lineHandles(n),'XData',[1:M])
 end
 
@@ -34,9 +33,7 @@ for i=1:N
             slice = result(n,range);
         end
         set(lineHandles(n),'YData',slice)
-        %set(axesHandles(n),'XTick',labels)
     end
     drawnow
 end
-printf('Done!')
 fclose(s1);
