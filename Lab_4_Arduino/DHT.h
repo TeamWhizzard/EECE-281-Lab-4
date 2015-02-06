@@ -5,10 +5,12 @@
 #else
 #include "WProgram.h"
 #endif
+
 /* DHT library
 MIT license
 written by Adafruit Industries
 */
+
 // how many timing transitions we need to keep track of. 2 * number bits + extra
 #define MAXTIMINGS 85
 #define DHT11 11
