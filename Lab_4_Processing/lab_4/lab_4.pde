@@ -97,8 +97,7 @@
   
    // draw dashed lines on graph
    for (int i = 0; i < (width - dashLength); i += (dashLength + spaceLength)) {
-     // TODO there should only be two here - test with board?
-     rect(i, graphSep, dashLength, lineHeight); // middle dash
+     rect(i, graphSep, dashLength, lineHeight); // top dash
      rect(i, hTemp + graphSep, dashLength, lineHeight); // middle dash
      rect(i, hHumid + graphSep, dashLength, lineHeight); // bottom dash
    }
