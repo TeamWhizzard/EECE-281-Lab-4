@@ -27,7 +27,6 @@
 #define FALSE 0
 
 const int pinButton = 5;
-const int pinTemp = A6;
 const int pinDHT = 4;
 const int pinLight = A1;
 const int pinBuzzer = 6;
@@ -53,12 +52,12 @@ void setup() {
   dht.begin(); // sensor begins reading
   lcd.begin(16, 2);
 
-  serial_lcd_intro(); // introductory messages
+  //serial_lcd_intro(); // introductory messages
 }
 
 void loop() {
   // TODO delays needed for readings of DHT?
-  tempVal = analogRead(pinTemp) * 0.48828125; // reads temperature in celcius
+  tempVal = dht.readTemperature(); // reads temperature in celcius
   humidVal = dht.readHumidity(); // reads humidity from DHT, returns percentage
   // light val devide by 10 is approx the percentage out of 100, devide by 2 is flooring values
   lightVal = analogRead(pinLight) / 20; // reads ambiant light, returns percentage out of max
@@ -97,10 +96,6 @@ void serial_report(int temp, int humid, int light) {
 }
 
 void lcd_report(int temp, int humid, int light) {
-  lcd.clear();
-  lcd.setCursor (0, 0);
-  lcd.print(F("Temp Light Humid"));
-
   lcd.setCursor (0, 1);
   lcd.print (String(temp) + "C");
 
@@ -110,8 +105,7 @@ void lcd_report(int temp, int humid, int light) {
   lcd.setCursor (12, 1);
   lcd.print (String(humid) + "%");
 
-  delay(1000);
-
+  delay(2000);
 }
 
 void serial_lcd_intro (void) {
@@ -129,7 +123,11 @@ void serial_lcd_intro (void) {
   lcd.setCursor(0, 0);
   lcd.print(F("Weather Machine!"));
   delay(1000);
-
+  
+  lcd.clear();
+  lcd.setCursor (0, 0);
+  lcd.print(F("Temp Light Humid"));
+  
   Serial.println();
 }
 
