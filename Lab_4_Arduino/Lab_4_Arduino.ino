@@ -43,7 +43,6 @@ DHT dht(pinDHT, DHTTYPE); // initialize DHT sensor
 LiquidCrystal lcd(2, 3, 8, 9, 10, 11); // initialize LCD display
 
 void setup() {
-  // does baud rate matter for external software? yep.
   Serial.begin(115200); //Serial Port Initialization
 
   pinMode (pinButton, INPUT_PULLUP); // initialize button
@@ -52,7 +51,7 @@ void setup() {
   dht.begin(); // sensor begins reading
   lcd.begin(16, 2);
 
-  //serial_lcd_intro(); // introductory messages
+  serial_lcd_intro(); // introductory messages
 }
 
 void loop() {
@@ -109,9 +108,6 @@ void lcd_report(int temp, int humid, int light) {
 }
 
 void serial_lcd_intro (void) {
-  // serial monitor intro
-  Serial.println(F("Welcome to Team Whizzard's Amazing Weather Machine!"));
-
   // lcd intro
   lcd.setCursor(0, 0);
   lcd.print(F(" Team Whizzard  ")); // first 16 characters of message
@@ -127,8 +123,6 @@ void serial_lcd_intro (void) {
   lcd.clear();
   lcd.setCursor (0, 0);
   lcd.print(F("Temp Light Humid"));
-  
-  Serial.println();
 }
 
 // button being on causes "upward" chime

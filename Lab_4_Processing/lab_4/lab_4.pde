@@ -1,6 +1,7 @@
  import processing.serial.*;
 
  static String DELIM = " ";
+ static int introLines = 2; // 
  
  Serial myPort;        // The serial port
  int xPos = 0;         // horizontal position of the graph
@@ -25,8 +26,7 @@
    
    myPort = new Serial(this, Serial.list()[0], 115200); // open port
    
-   myPort.bufferUntil('\n');  // don't generate a serialEvent() unless you get a newline character
-   
+   myPort.bufferUntil('\n');  // don't generate a serialEvent() unless you get a newline character   
    graphTemplate();
  }
  
@@ -36,39 +36,37 @@
  
  void serialEvent (Serial myPort) {
    String inString = myPort.readStringUntil('\n');
+   
+   int rectWidth = 16;
+   
+   inString = trim(inString); // trim trailing or leading whitespace
 
-   if (inString != null) {
-     int rectWidth = 16;
+   float temp = float(inString.split(DELIM) [0]);
+   float humid = float(inString.split(DELIM) [1]);
+   float light = float(inString.split(DELIM) [2]);
      
-     inString = trim(inString); // trim trailing or leading whitespace
-  
-     float temp = float(inString.split(DELIM) [0]);
-     float humid = float(inString.split(DELIM) [1]);
-     float light = float(inString.split(DELIM) [2]);
-     
-     temp = map(temp, 0, 40, 0, (height / 3) - graphSep); // convert to range that will fit on screen
-     humid = map(humid, 0, 100, 0, (height / 3) - graphSep); 
-     light = map(light, 20, 50, 0, (height / 3) - graphSep);
-     
-     // draw bars of graphs
-     strokeWeight (1);
-     strokeCap(SQUARE); // makes square line endings for bars
-     
-     fill(165, 6, 121); // purple
-     rect(xPos, hTemp - temp, rectWidth, temp);
-     
-     fill(221, 159, 7); // yellow
-     rect(xPos, hHumid - humid, rectWidth, humid);
-     
-     fill(10,103,139); // blue
-     rect(xPos, hLight - light, rectWidth, light);
-     
-     if (xPos >= width) { // at edge of screen, go back to the beginning
-       xPos = 0;
-       graphTemplate(); 
-     } else { // increment horizontal position
-       xPos += rectWidth;
-     }
+   temp = map(temp, 0, 40, 0, (height / 3) - graphSep); // convert to range that will fit on screen
+   humid = map(humid, 0, 100, 0, (height / 3) - graphSep); 
+   light = map(light, 20, 50, 0, (height / 3) - graphSep);
+   
+   // draw bars of graphs
+   strokeWeight (1);
+   strokeCap(SQUARE); // makes square line endings for bars
+   
+   fill(165, 6, 121); // purple
+   rect(xPos, hTemp - temp, rectWidth, temp);
+   
+   fill(221, 159, 7); // yellow
+   rect(xPos, hHumid - humid, rectWidth, humid);
+   
+   fill(10,103,139); // blue
+   rect(xPos, hLight - light, rectWidth, light);
+   
+   if (xPos >= width) { // at edge of screen, go back to the beginning
+     xPos = 0;
+     graphTemplate(); 
+   } else { // increment horizontal position
+     xPos += rectWidth;
    }
  }
  
