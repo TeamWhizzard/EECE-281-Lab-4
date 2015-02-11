@@ -101,7 +101,6 @@ void serial_report(int temp, int humid, int light) {
 
 // print weather report to 16*2 LCD display
 void lcd_report(int temp, int humid, int light) {
-  clear();
   
   lcd.setCursor (0, 1);
   lcd.print (String(temp) + "C  ");
